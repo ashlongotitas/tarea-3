@@ -5,28 +5,34 @@
 #include "tdas/extra.h"
 #include <string.h>
 
+// Definición de estructuras de datos
+
+// Estructura para representar items del juego
 typedef struct {
-    char nombre[50]; 
-    int peso;    
-    int valor;     
+    char nombre[50];   // Nombre del item
+    int peso;          // Peso del item (afecta movimiento)
+    int valor;         // Valor/puntos del item
 } Item;
 
+// Estructura para direcciones disponibles
 typedef struct{
-    int arriba;
-    int abajo;
-    int izquierda;
-    int derecha;
+    int arriba;        // ID escenario arriba (-1 si no hay)
+    int abajo;         // ID escenario abajo (-1 si no hay)
+    int izquierda;     // ID escenario izquierda (-1 si no hay)
+    int derecha;      // ID escenario derecha (-1 si no hay)
 } Direccion;
 
+// Estructura principal para los escenarios del juego
 typedef struct{
-    int id;
-    char nombre[100];
-    char descripcion[200];
-    Direccion decisiones;
-    List* items;
-    bool esFinal;
+    int id;                   // ID único del escenario
+    char nombre[100];         // Nombre del escenario
+    char descripcion[200];    // Descripción del escenario
+    Direccion decisiones;     // Conexiones a otros escenarios
+    List* items;             // Lista de items disponibles en este escenario
+    bool esFinal;            // Indica si es un escenario final
 } Escenario;
 
+// Función que muestra el menú principal
 void mostrarMenuPrincipal() {
   limpiarPantalla();
   puts("==========================");
@@ -37,13 +43,13 @@ void mostrarMenuPrincipal() {
   puts("3) Salir");
 }
 
+// Función para cargar los escenarios desde un archivo CSV
 void leer_escenarios(Graph* grafo) 
 {
   // Intenta abrir el archivo CSV que contiene datos de películas
   FILE *archivo = fopen("data/graphquest.csv", "r");
   if (archivo == NULL) {
-    perror(
-        "Error al abrir el archivo"); // Informa si el archivo no puede abrirse
+    perror("Error al abrir el archivo"); // Informa si el archivo no puede abrirse
     return;
   }
 
@@ -51,7 +57,6 @@ void leer_escenarios(Graph* grafo)
   // Leer y parsear una línea del archivo CSV. La función devuelve un array de
   // strings, donde cada elemento representa un campo de la línea CSV procesada.
   campos = leer_linea_csv(archivo, ','); // Lee los encabezados del CSV
-
 
   // Lee cada línea del archivo CSV hasta el final
   while ((campos = leer_linea_csv(archivo, ',')) != NULL) {
@@ -110,12 +115,12 @@ void leer_escenarios(Graph* grafo)
 
     // Inserta el escenario en el grafo
     graph_insertVertex(grafo, escenario->id, escenario);
-
   }
   fclose(archivo); // Cierra el archivo después de leer todas las líneas
   printf("Escenarios leidos correctamente.\n");
 }
 
+// Función para mostrar el estado actual del juego
 void mostrar_estado(Escenario* actual, List* inventario, int puntaje, int peso_actual, int tiempo) {
     limpiarPantalla();
     puts("==================================");
@@ -161,10 +166,11 @@ void mostrar_estado(Escenario* actual, List* inventario, int puntaje, int peso_a
     if (actual->decisiones.derecha != -1) puts("4. Derecha ");
 }
 
+// Función principal del juego
 void iniciar_partida(Graph* grafo) 
 {
-    List* inventario = list_create();
-    int puntaje = 0, peso_actual = 0, tiempo = 15;
+    List* inventario = list_create();  // Inventario del jugador
+    int puntaje = 0, peso_actual = 0, tiempo = 15;  // Estadísticas del jugador
     int escenario_actual = 1; // Comenzar en el escenario 1 (Entrada)
 
     Escenario* actual = (Escenario*)getVertexData(grafo, escenario_actual);
@@ -176,6 +182,7 @@ void iniciar_partida(Graph* grafo)
     printf("Iniciando partida en el escenario: %s\n", actual->nombre);
     printf("Descripcion: %s\n", actual->descripcion);
 
+    // Bucle principal del juego
     while (tiempo > 0 && !actual->esFinal) {
 
         printf("\nOpciones:\n");
@@ -289,7 +296,7 @@ void iniciar_partida(Graph* grafo)
                 if (nuevo_id != -1) {
                     int costo = (peso_actual + 10) / 10; // ceil(peso/10)
                     if (tiempo - costo <= 0) {
-                        puts("¡No tienes suficiente tiempo para moverte!");
+                        puts("No tienes suficiente tiempo para moverte");
                         tiempo = 0;
                         break;
                     }
@@ -321,7 +328,6 @@ void iniciar_partida(Graph* grafo)
                 escenario_actual = 1;
                 actual = (Escenario*)getVertexData(grafo, escenario_actual);
                 puts("Partida reiniciada");
-
                 break;
             case '5': // Salir
                 puts("Saliendo del juego...");
@@ -329,12 +335,12 @@ void iniciar_partida(Graph* grafo)
                 free(inventario);
                 return;
             default:
-                puts("Opción no válida");
+                puts("Opcion no valida");
                 break;
         }
 
         if (tiempo <= 0) {
-            puts("\n¡Se te acabó el tiempo! Game Over");
+            puts("\nSe te acabo el tiempo, Game Over");
             printf("Puntaje final: %d\n", puntaje);
         }
         presioneTeclaParaContinuar();
@@ -345,10 +351,12 @@ void iniciar_partida(Graph* grafo)
     free(inventario);
 }
 
+// Función principal del programa
 int main() {
-    Graph* grafo = createGraph();
+    Graph* grafo = createGraph();  // Crea el grafo que contendrá los escenarios
     char opcion;
 
+    // Bucle del menú principal
     do {
         mostrarMenuPrincipal();
         printf("Ingrese su opcion: ");
@@ -357,10 +365,10 @@ int main() {
 
         switch(opcion) {
             case '1':
-                leer_escenarios(grafo);
+                leer_escenarios(grafo);  // Carga los escenarios desde el archivo
                 break;
             case '2':
-                iniciar_partida(grafo);
+                iniciar_partida(grafo);  // Inicia una nueva partida
                 break;
             case '3':
                 puts("Saliendo...");
