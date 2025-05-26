@@ -4,7 +4,7 @@
 
 ---
 
-## 🛠️ Cómo Compilar y Ejecutar
+##  Cómo Compilar y Ejecutar
 
 Este sistema ha sido desarrollado en lenguaje **C**. Se recomienda utilizar **Visual Studio Code** para facilitar su ejecución.
 
@@ -13,7 +13,7 @@ Este sistema ha sido desarrollado en lenguaje **C**. Se recomienda utilizar **Vi
 - Visual Studio Code: [Descargar VSC](https://code.visualstudio.com)
 - Extensión de C/C++: C/C++ Extension Pack de Microsoft.
 - Compilador `gcc`: Se recomienda instalar **MinGW**.  
-  👉 [Descargar MinGW (Windows)](https://sourceforge.net/projects/mingw/)
+   [Descargar MinGW (Windows)](https://sourceforge.net/projects/mingw/)
 
 ### Pasos para Compilar
 
@@ -36,7 +36,7 @@ gcc -o tarea3 tarea3.c tdas/list.c tdas/graph.c tdas/extra.c -I.
 
 ---
 
-## ✅ Funcionamiento
+##  Funcionamiento
 
 - **Carga desde CSV:** Construye un grafo donde cada nodo representa un escenario.
 - **Exploración interactiva:** Menú dinámico para moverse, recolectar/descartar ítems y gestionar tiempo.
@@ -44,7 +44,7 @@ gcc -o tarea3 tarea3.c tdas/list.c tdas/graph.c tdas/extra.c -I.
 
 ---
 
-## 🧪 Ejemplo de Uso
+##  Ejemplo de Uso
 
 ### Paso 1: Leer escenarios
 
@@ -90,18 +90,18 @@ Cuando termines o logres escapar del laberinto, selecciona esta opción.
 
 ---
 
-## 🐞 Problemas Conocidos
+##  Problemas Conocidos
 
 - **Tiempo de carga alto:** En laberintos con más de 100 nodos.
 - **Errores de formato:** Algunos caracteres especiales o idiomas no latinos pueden fallar.
 
 ---
 
-## 🚀 Mejoras Futuras
+##  Mejoras Futuras
 
-- 🔍 Búsqueda de rutas óptimas para maximizar puntuación.
-- 💾 Guardado y recuperación de partidas.
-- 🧩 Mecánicas avanzadas como combates o acertijos.
+-  Búsqueda de rutas óptimas para maximizar puntuación.
+-  Guardado y recuperación de partidas.
+-  Mecánicas avanzadas como combates o acertijos.
 
 ---
 
